@@ -1,5 +1,6 @@
 import Runtime from "../js/core.js";
 import {rand} from "../js/utils/random-utils.js";
+import Script from "../js/script.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -12,7 +13,7 @@ const sprite = new Runtime.Sprite();
 const sprite2 = new Runtime.Sprite();
 
 
-class MyScript extends Runtime.Script {
+class MyScript extends Script {
 
     constructor() {
         super();
@@ -28,6 +29,11 @@ class MyScript extends Runtime.Script {
         this.target.x = Math.random() * 800;
         this.target.y = Math.random() * 600;
         this.target.height = rand(50, 200)
+    }
+
+    onCollision(target) {
+        this.vx = -this.vx;
+        this.vy = -this.vy;
     }
 
     update() {
@@ -51,11 +57,6 @@ class MyScript extends Runtime.Script {
 
 const t1 = new MyScript();
 const t2 = new MyScript();
-
-setInterval(() => {
-    console.log('on collision')
-    sprite.onCollision(1);
-}, 3000)
 
 
 sprite.setScript(t1);

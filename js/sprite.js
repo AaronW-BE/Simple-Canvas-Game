@@ -14,9 +14,16 @@ class Sprite {
         this.degree = 0;
         this.color = randomRGB(100, 250);
 
+        this.colliderType = Sprite.ColliderTypes.BOX
+
         this.script = null;
+        this.__scene = null;
 
         this._sid = Sprite.sidGenerator.nextSid();
+    }
+
+    get scene() {
+        return this.__scene;
     }
 
     setScript(s) {
@@ -40,7 +47,7 @@ class Sprite {
     }
 
     onCollision(target) {
-        this.script.onCollision({
+        this.script && this.script.onCollision({
             t: Date.now(),
             target,
             self: this
@@ -62,4 +69,7 @@ class Sprite {
     }
 }
 
+Sprite.ColliderTypes = {
+    BOX: 1, CIRCLE: 2, ELLIPSE: 3, CUSTOM: 4
+};
 export default Sprite;

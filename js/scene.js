@@ -1,4 +1,6 @@
 import {sidGenerator} from "./utils/seq-utils.js";
+import Sprite from "./sprite.js";
+import {isNnBoxArea} from "./utils/area-utils.js";
 
 class Scene {
     static sidGenerator = sidGenerator();
@@ -27,16 +29,57 @@ class Scene {
                 this.removeSprite(sprite);
                 continue;
             }
+
+            this.collisionTest(sprite, this.sprites);
             sprite.draw(this.ctx);
         }
     }
 
+    collisionTest(current, sprites) {
+        for (let sprite of sprites) {
+            if (current._sid === sprite._sid) {
+                continue;
+            }
+            switch (current.colliderType) {
+                case Sprite.ColliderTypes.BOX:
+                    if (isNnBoxArea(current.x, current.y, sprite.x, sprite.y, sprite.width, sprite.height)
+                        ||
+                        isNnBoxArea(current.x + current.width, current.y, sprite.x, sprite.y, sprite.width, sprite.height)
+                        ||
+                        isNnBoxArea(current.x, current.y + current.height, sprite.x, sprite.y, sprite.width, sprite.height)
+                        ||
+                        isNnBoxArea(current.x + current.width, current.y + current.height, sprite.x, sprite.y, sprite.width, sprite.height)
+                        ||
+                        isNnBoxArea(sprite.x, sprite.y, current.x, current.y, current.width, current.height)
+                        ||
+                        isNnBoxArea(sprite.x + sprite.width, sprite.y, current.x, current.y, current.width, current.height)
+                        ||
+                        isNnBoxArea(sprite.x, sprite.y + sprite.height, current.x, current.y, current.width, current.height)
+                        ||
+                        isNnBoxArea(sprite.x + sprite.width, sprite.y + sprite.height, current.x, current.y, current.width, current.height)
+                    ) {
+
+                        current.onCollision(sprite);
+                        return;
+                    }
+                    break;
+                case Sprite.ColliderTypes.CIRCLE:
+                    break;
+                case Sprite.ColliderTypes.ELLIPSE:
+                    break;
+                case Sprite.ColliderTypes.CUSTOM:
+                    break;
+            }
+        }
+    }
+
     addSprite(sprite) {
+        sprite.__scene = this;
         this.sprites.push(sprite)
     }
 
     removeSprite(sprite) {
-        const findIndex = this.sprites.findIndex(s => s.sid === sprite._sid);
+        const findIndex = this.sprites.findIndex(s => s._sid === sprite._sid);
         this.sprites.splice(findIndex, 1);
     }
 }
