@@ -8,6 +8,7 @@ class Runtime {
         this.init();
         this.lastCallTime = performance.now();
         this.fps = 0;
+        this.paused = false;
     }
 
     init() {
@@ -44,11 +45,13 @@ class Runtime {
 
     pause() {
         this.aid && cancelAnimationFrame(this.aid);
+        this.paused = true;
     }
 
     start() {
         if (this.scene) {
             this.draw();
+            this.paused = false;
             return;
         }
         throw new Error("must have a scene");

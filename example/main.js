@@ -25,8 +25,8 @@ class MyScript extends Runtime.Script {
     }
 
     init() {
-        this.target.x = Math.random() * 200;
-        this.target.y = Math.random() * 1000;
+        this.target.x = Math.random() * 800;
+        this.target.y = Math.random() * 600;
         this.target.height = rand(50, 200)
     }
 
@@ -66,3 +66,7 @@ scene.addSprite(sprite2);
 runtime.setScene(scene);
 
 runtime.start();
+
+document.addEventListener('click', () => {
+    runtime.paused ? runtime.start() : runtime.pause();
+});
