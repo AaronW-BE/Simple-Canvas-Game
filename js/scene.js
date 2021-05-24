@@ -1,16 +1,15 @@
+import {sidGenerator} from "./utils/seq-utils.js";
+
 class Scene {
-    static sid = 0;
+    static sidGenerator = sidGenerator();
     constructor(ctx) {
         this.ctx = ctx;
         this.sprites = [];
-        this._sid = this.nextSid();
+        this._sid = Scene.sidGenerator.nextSid();
     }
 
     setCtx(ctx) {
         this.ctx = ctx;
-    }
-    nextSid() {
-        return Scene.sid++;
     }
 
     update() {

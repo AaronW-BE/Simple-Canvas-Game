@@ -1,7 +1,9 @@
 import { randomRGB } from './utils/random-utils.js'
+import {sidGenerator} from "./utils/seq-utils.js";
 
 class Sprite {
-    static sid = 0;
+    static sidGenerator = sidGenerator();
+
     constructor() {
         this.alive = true;
         this.visible = true;
@@ -14,11 +16,7 @@ class Sprite {
 
         this.script = null;
 
-        this._sid = this.nextSid();
-    }
-
-    nextSid() {
-        return Sprite.sid++;
+        this._sid = Sprite.sidGenerator.nextSid();
     }
 
     setScript(s) {

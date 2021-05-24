@@ -12,7 +12,6 @@ const sprite = new Runtime.Sprite();
 const sprite2 = new Runtime.Sprite();
 
 
-
 class MyScript extends Runtime.Script {
 
     constructor() {
